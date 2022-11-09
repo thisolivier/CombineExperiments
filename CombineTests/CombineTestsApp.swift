@@ -11,7 +11,7 @@ import SwiftUI
 struct CombineTestsApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentViewFactory.makeContentView()
         }
     }
 }

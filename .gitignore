@@ -1,0 +1,5 @@
+.DS_Store
+.Trashes
+*.xcuserdata
+*.xcuserdatad
+*.xcworkspacedata
