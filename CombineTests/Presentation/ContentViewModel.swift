@@ -21,11 +21,25 @@ class ContentViewModel: ObservableObject {
     }
 
     func requestStartOfWorld() {
+        startButtonVisible = false
         useCase.sink { completion in
             self.headerText = "Impossible"
         } receiveValue: { world in
-            self.headerText = String(format: "%.2f", world.incrimentsSinceStartOfUniverse)
+            self.headerText = self.formatWorldAge(world.incrimentsSinceStartOfUniverse)
         }
         .store(in: &disposeBag)
+    }
+
+    func formatWorldAge(_ age: Double) -> String {
+        let emoji: String = {
+            if age < 10 {
+                return "🌱"
+            } else if age < 20 {
+                return "🌿"
+            } else {
+                return "🌳"
+            }
+        }()
+        return String(format: "%.2f", age) + " seconds old " + emoji
     }
 }

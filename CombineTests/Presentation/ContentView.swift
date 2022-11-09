@@ -13,14 +13,23 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
+            Text("The World Is...")
             Text(viewModel.headerText)
-                .padding()
+                .padding(.bottom, 10)
                 .font(.title)
+            startWorldButton(viewModel.startButtonVisible)
+        }
+    }
+
+    @ViewBuilder
+    func startWorldButton(_ showButton: Bool) -> some View {
+        if showButton {
             Button("Start World") {
                 viewModel.requestStartOfWorld()
             }
+        } else {
+            EmptyView()
         }
-
     }
 }
 
