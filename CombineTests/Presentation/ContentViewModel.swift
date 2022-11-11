@@ -15,19 +15,26 @@ class ContentViewModel: ObservableObject {
     @Published var startButtonVisible: Bool = true
     private var disposeBag = Set<AnyCancellable>()
     private var useCase: AnyPublisher<World, Never>
+    private var showWorld: PassthroughSubject<Bool, Never>
 
     init(showWorldUseCase: WorldShowable) {
         useCase = showWorldUseCase.showWorld()
+        showWorld = PassthroughSubject<Bool, Never>()
+        showWorld.send(false)
+        showWorld
+            .sink { self.startButtonVisible = !$0 }
+            .store(in: &disposeBag)
     }
 
     func requestStartOfWorld() {
-        startButtonVisible = false
-        useCase.sink { completion in
-            self.headerText = "Impossible"
-        } receiveValue: { world in
-            self.headerText = self.formatWorldAge(world.incrimentsSinceStartOfUniverse)
-        }
-        .store(in: &disposeBag)
+        showWorld.send(true)
+//        startButtonVisible = false
+//        useCase.sink { completion in
+//            self.headerText = "Impossible"
+//        } receiveValue: { world in
+//            self.headerText = self.formatWorldAge(world.incrimentsSinceStartOfUniverse)
+//        }
+//        .store(in: &disposeBag)
     }
 
     func formatWorldAge(_ age: Double) -> String {
